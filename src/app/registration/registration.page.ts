@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {RegisterResponse} from './registration.module';
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-registration',
@@ -18,22 +19,17 @@ export class RegistrationPage implements OnInit {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     password_confirmation: new FormControl('', Validators.required),
   });
-  private error: string;
+  error: string;
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private userService: UserService, private router: Router) {
   }
 
   ngOnInit() {
   }
 
   register() {
-    this.http
-      .post('http://127.0.0.1:8000/api/register', this.contactForm.value, {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          'Content-Type': 'application/json'
-        }
-      })
+    this.userService
+      .registerUser(this.contactForm.value)
       .subscribe({
           next: (data: RegisterResponse) => {
             if (data.token) {

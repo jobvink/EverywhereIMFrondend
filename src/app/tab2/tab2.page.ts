@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UsersResponse} from './tab2-routing.module';
+import {ColorService} from '../color.service';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-tab2',
@@ -12,39 +14,29 @@ export class Tab2Page {
   userId: number;
   colors = ['green', 'red', 'yellow', 'blue'];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private colorService: ColorService, private userService: UserService) {
     this.userId = parseInt(localStorage.getItem('user_id'), 10);
     this.updateUsers();
   }
 
   updateUsers() {
-    this.http.get('http://127.0.0.1:8000/api/users', {
-      headers: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    })
+
+    this.userService
+      .getUsers()
       .subscribe((data: UsersResponse) => {
         this.users = data;
-        console.log(data);
       });
   }
 
   randomize() {
     const randomColor = this.colors[Math.floor(Math.random() * this.colors.length)];
 
-    this.http.patch(`http://127.0.0.1:8000/api/users/${this.userId}/color`, {
-      color: randomColor,
-    }, {
-      headers: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    }).subscribe({
-      next: (data) => {
-        this.updateUsers();
-      }
-    });
+    this.colorService.updateColor(randomColor, this.userId)
+      .subscribe({
+        next: (data) => {
+          this.updateUsers();
+        }
+      });
   }
 
   userColors(user: any) {
