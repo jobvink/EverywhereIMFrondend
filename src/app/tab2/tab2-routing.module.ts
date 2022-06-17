@@ -14,3 +14,7 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class Tab2PageRoutingModule {}
+
+export class UsersResponse {
+  users: any;
+}
