@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -15,6 +15,7 @@ export class LoginPage implements OnInit {
     email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
+  public error: string;
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -29,9 +30,12 @@ export class LoginPage implements OnInit {
       device_name: (navigator as any).userAgent
     })
       .subscribe((data: TokenResponse) => {
+        localStorage.setItem('user_id', data.user_id);
         localStorage.setItem('token', data.token);
         this.router.navigate(['/app/color']);
-      }, error => console.log(error));
+      }, (err: HttpErrorResponse) => {
+        this.error = err.error.message;
+      });
   }
 
 }

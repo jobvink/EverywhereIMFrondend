@@ -1,5 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+class Color {
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  hex_code: string;
+}
+
 @Component({
   selector: 'app-color-card',
   templateUrl: './color-card.component.html',
@@ -7,13 +13,12 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ColorCardComponent implements OnInit {
   @Input()
-  color: string = 'green';
+  color: Color;
 
   constructor() {
   }
 
   ngOnInit() {
-    console.log(this.color);
   }
 
 }

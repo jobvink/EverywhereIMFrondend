@@ -21,5 +21,7 @@ import { LoginPage } from './login.page';
 export class LoginPageModule {}
 
 export class TokenResponse {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  user_id: string;
   token: string;
 }

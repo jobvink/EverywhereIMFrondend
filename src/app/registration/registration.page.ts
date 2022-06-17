@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -18,6 +18,7 @@ export class RegistrationPage implements OnInit {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     password_confirmation: new FormControl('', Validators.required),
   });
+  private error: string;
 
   constructor(private http: HttpClient, private router: Router) {
   }
@@ -35,12 +36,14 @@ export class RegistrationPage implements OnInit {
       })
       .subscribe({
           next: (data: RegisterResponse) => {
-            if (data.status === 'success') {
+            if (data.token) {
+              localStorage.setItem('user_id', data.user_id);
+              localStorage.setItem('token', data.token);
               this.router.navigate(['/app/color']);
             }
           },
-          error: error => {
-            console.error('There was an error!', error);
+          error: (err: HttpErrorResponse) => {
+            this.error = err.error.message;
           }
         }
       );

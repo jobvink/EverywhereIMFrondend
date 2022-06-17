@@ -21,5 +21,7 @@ import { RegistrationPage } from './registration.page';
 export class RegistrationPageModule {}
 
 export class RegisterResponse {
-  status: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  user_id: string;
+  token: string;
 }

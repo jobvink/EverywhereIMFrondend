@@ -14,24 +14,9 @@
   </ion-header>
 
   <ion-grid>
-    <ion-row>
+    <ion-row *ngFor="let color of colors">
       <ion-col>
-        <app-color-card color="green"></app-color-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <app-color-card color="red"></app-color-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <app-color-card color="yellow"></app-color-card>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <app-color-card color="blue"></app-color-card>
+        <app-color-card [color]="color"></app-color-card>
       </ion-col>
     </ion-row>
 

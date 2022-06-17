@@ -9,28 +9,49 @@ import {UsersResponse} from './tab2-routing.module';
 })
 export class Tab2Page {
   users: any;
+  userId: number;
+  colors = ['green', 'red', 'yellow', 'blue'];
 
   constructor(private http: HttpClient) {
+    this.userId = parseInt(localStorage.getItem('user_id'), 10);
+    this.updateUsers();
+  }
+
+  updateUsers() {
     this.http.get('http://127.0.0.1:8000/api/users', {
       headers: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     })
-      .subscribe((data: UsersResponse) => this.users = data);
+      .subscribe((data: UsersResponse) => {
+        this.users = data;
+        console.log(data);
+      });
   }
 
   randomize() {
-    const colors = ['green', 'red', 'yellow', 'blue'];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomColor = this.colors[Math.floor(Math.random() * this.colors.length)];
 
-    this.http.patch('http://127.0.0.1:8000/api/users/1/color', {
+    this.http.patch(`http://127.0.0.1:8000/api/users/${this.userId}/color`, {
       color: randomColor,
+    }, {
+      headers: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
     }).subscribe({
       next: (data) => {
-        console.log(data);
+        this.updateUsers();
       }
     });
   }
 
+  userColors(user: any) {
+    const colors = [];
+    for (const color of user.colors) {
+      colors.push(color.name);
+    }
+    return colors;
+  }
 }

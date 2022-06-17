@@ -14,10 +14,15 @@
   </ion-header>
 
   <!-- List of Text Items -->
-  <ion-list>
+  <ion-list class="ion-padding-top ion-margin-top">
     <ion-item *ngFor="let serverUser of users">
       <ion-label>{{ serverUser.name }}</ion-label>
-      <ion-button (click)="randomize()">
+      <ion-select multiple="true" [value]="userColors(serverUser)" okText="Okay" cancelText="Dismiss" >
+        <ion-select-option *ngFor="let color of colors" [value]="color">
+          {{ color }}
+        </ion-select-option>
+      </ion-select>
+      <ion-button *ngIf="serverUser.id === userId" (click)="randomize()">
         <ion-icon name="refresh-outline"></ion-icon>
       </ion-button>
     </ion-item>
