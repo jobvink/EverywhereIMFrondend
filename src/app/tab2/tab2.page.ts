@@ -19,6 +19,10 @@ export class Tab2Page {
     this.updateUsers();
   }
 
+  ionViewDidEnter(): void {
+    this.updateUsers();
+  }
+
   updateUsers() {
 
     this.userService
